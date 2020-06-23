@@ -32,6 +32,7 @@ public class Model {
 
     }
 
+    //Post Request
     public void post(final String url, final Map<String, String> params, final MainContract.Presenter presenter){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest =  new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -91,6 +92,7 @@ public class Model {
         requestQueue.add(stringRequest);
     }
 
+    //Get Request
     public void get(final String url,final MainContract.Presenter presenter){
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest =  new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {

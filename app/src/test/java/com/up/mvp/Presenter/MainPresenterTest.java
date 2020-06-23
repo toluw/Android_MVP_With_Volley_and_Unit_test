@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.*;
@@ -23,9 +25,16 @@ public class MainPresenterTest {
     MainContract.View viewMock = mock(MainContract.View.class);   //Mock view class
     Model modelMock = mock(Model.class);   //mock model class
 
+    Map params  = mock(HashMap.class);
+
+    JSONObject jsonObject = mock(JSONObject.class);
 
 
     MainPresenter SUT;
+
+    String url = "http://mypost/post.php";
+
+    String errorMsg = "An error occured";
 
 
 
@@ -36,12 +45,32 @@ public class MainPresenterTest {
 
     @Test
     public void loadJob() {
-        SUT.loadJob("http://mypost/post.php");
-        verify(modelMock,timeout(1)).get("http://mypost/post.php",SUT);
+        SUT.loadJob(url);
+        verify(modelMock,timeout(1)).get(url,SUT);
+        verify(viewMock).showDialog();
+    }
+
+    @Test
+    public void loadProf() {
+        SUT.loadProf("http://mypost/post.php",params);
+        verify(modelMock,timeout(1)).post("http://mypost/post.php",params,SUT);
         verify(viewMock).showDialog();
     }
 
 
+    @Test
+    public void getResponse() {
+       SUT.getResponse(jsonObject,url);
+       verify(viewMock).closeDialog();
+        verify(viewMock).showResponse(jsonObject,url);
+    }
 
 
+    @Test
+    public void getError() {
+        SUT.getError(errorMsg,url);
+        verify(viewMock).closeDialog();
+        verify(viewMock).showError(errorMsg,url);
+
+    }
 }
