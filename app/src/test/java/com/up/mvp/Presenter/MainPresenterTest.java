@@ -23,7 +23,18 @@ public class MainPresenterTest {
     MainContract.View viewMock = mock(MainContract.View.class);   //Mock view class
     Model modelMock = mock(Model.class);   //mock model class
 
+
+
     MainPresenter SUT;
+
+    JSONObject object = new JSONObject();
+
+
+    JSONArray array = new JSONArray();
+
+
+    ArrayList<String> bd = new ArrayList<>();
+
 
     @Before
     public void setUp() throws Exception {
@@ -40,19 +51,13 @@ public class MainPresenterTest {
     @Test
     public void getProfArray_returnExpectedValue() {
         try {
-            JSONObject object = mock(JSONObject.class);
 
-
-            JSONArray array = mock(JSONArray.class);
             array.put("One");
             array.put("Two");
             array.put("Three");
             array.put("Four");
-
             object.put("game",array);
 
-
-            ArrayList<String> bd = new ArrayList<>();
             bd.add("One");
             bd.add("Two");
             bd.add("Three");
