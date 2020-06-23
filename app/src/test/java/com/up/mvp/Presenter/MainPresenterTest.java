@@ -27,13 +27,6 @@ public class MainPresenterTest {
 
     MainPresenter SUT;
 
-    JSONObject object = new JSONObject();
-
-
-    JSONArray array = new JSONArray();
-
-
-    ArrayList<String> bd = new ArrayList<>();
 
 
     @Before
@@ -48,31 +41,7 @@ public class MainPresenterTest {
         verify(viewMock).showDialog();
     }
 
-    @Test
-    public void getProfArray_returnExpectedValue() {
-        try {
-
-            array.put("One");
-            array.put("Two");
-            array.put("Three");
-            array.put("Four");
-            object.put("game",array);
-
-            bd.add("One");
-            bd.add("Two");
-            bd.add("Three");
-            bd.add("Four");
 
 
-            ArrayList<String> d = SUT.getProfArray(object);
-            assertThat(d, is(bd));
 
-
-        }
-        catch (JSONException e){
-
-        }
-
-
-    }
 }
