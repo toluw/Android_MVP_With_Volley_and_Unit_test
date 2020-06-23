@@ -29,11 +29,13 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements MainContract.View {
     ProgressBar dialog;
     ListView list;
-    String profurl = "http://35.205.69.78/project/prof_store.php";
-    String joburl = "http://35.205.69.78/project/jothers1.php";
+
+    String posturl = "http://mypost/post.php";  // URL for post request
+    String geturl = "http://myget/get.php";  //URL for get request
+
     MainContract.Presenter presenter;
 
-    Map<String, String> params;
+    Map<String, String> params  = new HashMap<String, String>();
 
     TextView text;
 
@@ -59,23 +61,24 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         presenter = new MainPresenter(this, new Model(this));
     }
 
-    //Professonal exams button clicked
+    //Perform Post request to API
     public void prof (View view){
-        //Data to be posted
-        params  = new HashMap<String, String>();
-        params.put("table","book_pnse");
 
-        //profurl is the API url
-        presenter.loadProf(profurl, params);
+        //Parameters of post request
+        params.put("value","200");
+        params.put("name","Emma");
+
+        //perform API call
+        presenter.loadProf(posturl, params);
     }
 
 
-    //Job button clicked
+    //Perform Get request to API
     public void job(View view){
-      presenter.loadJob(joburl);
+      presenter.loadJob(geturl);
     }
 
-    //Dialog shown
+    //SHow progress dialog
     @Override
     public void showDialog() {
      dialog.setVisibility(View.VISIBLE);
@@ -84,8 +87,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     //Response gotten from volley call
     @Override
     public void showResponse(JSONObject jsonObject, String url) {
-    if(url.equals(profurl)){
-        //Response for professional exam volley call
+    if(url.equals(posturl)){
+        //Response from POST call
         try {
 
             if (jsonObject.has("response")){
@@ -95,18 +98,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 a.show();
             }
             else {
-                text.setText("Professional Exams");
-                JSONArray jarray = jsonObject.getJSONArray("game");
+                text.setText("Post result");
+                ArrayList<String> listItems =  presenter.getProfArray(jsonObject); //Gets data to be displayed on list view
 
-
-               String[] tit = new String[jarray.length()];
-
-                for (int i = 0; i < jarray.length(); i++){
-                    JSONObject object = jarray.getJSONObject(i);
-                    tit[i]= object.getString("title");
-
-                }
-                ArrayList<String> listItems = new ArrayList<>(Arrays.asList(tit));
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1,listItems);
                 list.setAdapter(adapter);
 
@@ -116,8 +110,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }else if(url.equals(joburl)){
-        //Response for Job questions volley call
+    }else if(url.equals(geturl)){
+        //response from get call
         try {
 
             if (jsonObject.has("response")){
@@ -125,11 +119,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 Toast a = Toast.makeText(getApplicationContext(), num, Toast.LENGTH_LONG);
                 a.setGravity(Gravity.CENTER, 0, 0);
                 a.show();
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
+
             }else
             {
-                text.setText("Job Questions");
+                text.setText("Get Calls");
                 String []m =  presenter.getJobArray(jsonObject);  //Gets Data to be displayed
                 ArrayList<String> listItems = new ArrayList<>(Arrays.asList(m));
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1,listItems);
@@ -144,11 +137,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
     }
 
+    //Error response from Volley call
     @Override
     public void showError(String errMsg, String url) {
           text.setText(errMsg);
     }
 
+    //Close progress dialog
     @Override
     public void closeDialog() {
     dialog.setVisibility(View.GONE);

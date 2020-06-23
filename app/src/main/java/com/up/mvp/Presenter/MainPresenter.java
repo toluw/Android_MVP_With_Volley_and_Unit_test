@@ -3,15 +3,19 @@ package com.up.mvp.Presenter;
 import com.up.mvp.Contract.MainContract;
 import com.up.mvp.Modell.Model;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 public class MainPresenter implements MainContract.Presenter {
     MainContract.View view;
     Model model;
     String[] m;
+    ArrayList<String> listItems;
 
     public MainPresenter(MainContract.View view, Model model){
         this.view = view;
@@ -43,7 +47,7 @@ public class MainPresenter implements MainContract.Presenter {
        view.showError(errMsg,url);
     }
 
-    // Returns array for String
+    //
     @Override
     public String[] getJobArray(JSONObject jsonObject) {
         try {
@@ -82,4 +86,24 @@ public class MainPresenter implements MainContract.Presenter {
         return m;
     }
 
+
+    @Override
+    public ArrayList<String> getProfArray(JSONObject jsonObject) {
+
+        try {
+            JSONArray  jarray = jsonObject.getJSONArray("game");
+            String[] tit = new String[jarray.length()];
+            for (int i = 0; i < jarray.length(); i++){
+                JSONObject object = jarray.getJSONObject(i);
+                tit[i]= object.getString("title");
+            }
+            listItems = new ArrayList<>(Arrays.asList(tit));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return listItems;
+
+    }
 }

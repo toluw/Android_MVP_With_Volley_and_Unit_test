@@ -2,6 +2,7 @@ package com.up.mvp.Contract;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public interface MainContract {
@@ -27,6 +28,8 @@ public interface MainContract {
         void getError(String errMsg, String url);
 
         String[] getJobArray(JSONObject jsonObject);
+
+        ArrayList<String>getProfArray(JSONObject jsonObject);
 
     }
 }
