@@ -27,7 +27,7 @@ public class MainPresenterTest {
 
     Map params  = mock(HashMap.class);
 
-    JSONObject jsonObject = mock(JSONObject.class);
+
 
 
     MainPresenter SUT;
@@ -60,9 +60,10 @@ public class MainPresenterTest {
 
     @Test
     public void getResponse() {
-       SUT.getResponse(jsonObject,url);
+        JSONObject object = mock(JSONObject.class);
+       SUT.getResponse(object,url);
        verify(viewMock).closeDialog();
-        verify(viewMock).showResponse(jsonObject,url);
+        verify(viewMock).showResponse(object,url);
     }
 
 
