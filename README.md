@@ -2,6 +2,6 @@
 
 Mainactivity.java: Implements Volley Post and Get request using MVP pattern
 
-SleepActivity.jav: Boilerplate code for MVP architecture
+SleepActivity.java: Boilerplate code for MVP architecture
 
 MainPresenterTest.java: Unit test for MainActivity Presenter
